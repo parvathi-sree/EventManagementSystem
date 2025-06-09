@@ -1,0 +1,88 @@
+swagger: "2.0"
+info:
+  title: Event Management API
+  description: API for creating and managing events and attendees
+  version: "1.0.0"
+host: localhost:5000
+basePath: /
+schemes:
+  - http
+
+paths:
+  /events:
+    post:
+      summary: Create a new event
+      tags:
+        - Events
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: event
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              location:
+                type: string
+              start_time:
+                type: string
+              end_time:
+                type: string
+              max_capacity:
+                type: integer
+      responses:
+        201:
+          description: Event created successfully
+        400:
+          description: Bad request
+
+    get:
+      summary: Get all upcoming events
+      tags:
+        - Events
+      responses:
+        200:
+          description: List of events
+
+  /events/{event_id}/register:
+    post:
+      summary: Register attendee
+      tags:
+        - Registration
+      parameters:
+        - in: path
+          name: event_id
+          required: true
+          type: integer
+        - in: body
+          name: attendee
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+      responses:
+        200:
+          description: Attendee registered
+        400:
+          description: Registration error
+
+  /events/{event_id}/attendees:
+    get:
+      summary: Get list of attendees for an event
+      tags:
+        - Registration
+      parameters:
+        - in: path
+          name: event_id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: List of attendees
